@@ -148,4 +148,4 @@ function errorCheckInputParameters(inputquery) {
     return true;
 }
 
-GLTF_SERVER.listen(GLTF_SERVER_PORT);
+GLTF_SERVER.listen(process.env.PORT || GLTF_SERVER_PORT);
