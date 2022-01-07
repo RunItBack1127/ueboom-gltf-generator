@@ -61,8 +61,6 @@ GLTF_SERVER.get('/', (req, res) => {
             });
         }
         else {
-            res.append('Access-Control-Expose-Headers', 'Content-Disposition');
-
             const region1Color = new RegionColor(region1[0], region1[1], region1[2]);
             const region2Color = new RegionColor(region2[0], region2[1], region2[2]);
             const region3Color = new RegionColor(region3[0], region3[1], region3[2]);
@@ -124,14 +122,14 @@ GLTF_SERVER.get('/', (req, res) => {
             obj2gltf(path.join(__dirname, "UE_MEGABOOM.obj")).then((gltf) => {
                 const gltfData = Buffer.from(JSON.stringify(gltf));
                 fs.writeFileSync(path.join(__dirname, "UE_MEGABOOM.gltf"), gltfData);
+
+                res.setHeader('Content-Type', 'model/gltf+json');
+                res.setHeader('Content-Disposition', 'attachment; filename="UE_MEGABOOM.gltf"');
+                res.status(200);
+                res.sendFile(path.join(__dirname, "UE_MEGABOOM.gltf"));
             }).catch(error => {
                 console.log(error);
             });
-
-            res.setHeader('Content-Type', 'model/gltf+json');
-            res.setHeader('Content-Disposition', 'attachment; filename="UE_MEGABOOM.gltf"');
-            res.status(200);
-            res.sendFile(path.join(__dirname, "UE_MEGABOOM.gltf"));
         }
     }
 });
