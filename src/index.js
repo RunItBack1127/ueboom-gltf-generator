@@ -117,6 +117,15 @@ GLTF_SERVER.get('/', (req, res) => {
     `;
 
     fs.writeFileSync("UE_MEGABOOM.mtl", mtlTemplate);
+
+    obj2gltf("UE_MEGABOOM.obj").then((gltf) => {
+        const gltfData = Buffer.from(JSON.stringify(gltf));
+        fs.writeFileSync("UE_MEGABOOM.gltf", gltfData);
+    });
+
+    res.setHeader('Content-Type', 'model/gltf+json');
+    res.status(200);
+    res.sendFile(path.join(__dirname), "UE_MEGABOOM.gltf");
 });
 
 function errorCheckInputParameters(inputParams) {
